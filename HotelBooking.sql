@@ -1,0 +1,289 @@
+﻿USE [master]
+GO
+/****** Object:  Database [HotelBooking]    Script Date: 4/19/2022 2:36:00 PM ******/
+CREATE DATABASE [HotelBooking]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'HotelBooking', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.TIENLE\MSSQL\DATA\HotelBookingL002.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'HotelBooking_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.TIENLE\MSSQL\DATA\HotelBookingL002_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [HotelBooking] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [HotelBooking].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [HotelBooking] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [HotelBooking] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [HotelBooking] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [HotelBooking] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [HotelBooking] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [HotelBooking] SET AUTO_CLOSE ON 
+GO
+ALTER DATABASE [HotelBooking] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [HotelBooking] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [HotelBooking] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [HotelBooking] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [HotelBooking] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [HotelBooking] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [HotelBooking] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [HotelBooking] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [HotelBooking] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [HotelBooking] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [HotelBooking] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [HotelBooking] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [HotelBooking] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [HotelBooking] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [HotelBooking] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [HotelBooking] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [HotelBooking] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [HotelBooking] SET  MULTI_USER 
+GO
+ALTER DATABASE [HotelBooking] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [HotelBooking] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [HotelBooking] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [HotelBooking] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [HotelBooking] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [HotelBooking] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [HotelBooking] SET QUERY_STORE = OFF
+GO
+USE [HotelBooking]
+GO
+/****** Object:  Table [dbo].[tblArea]    Script Date: 4/19/2022 2:36:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblArea](
+	[areaID] [int] IDENTITY(1,1) NOT NULL,
+	[areaName] [nvarchar](50) NULL,
+ CONSTRAINT [PK_tblArea] PRIMARY KEY CLUSTERED 
+(
+	[areaID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tblBooking]    Script Date: 4/19/2022 2:36:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblBooking](
+	[bookingID] [int] IDENTITY(1,1) NOT NULL,
+	[email] [nvarchar](50) NULL,
+	[totalPrice] [float] NULL,
+	[bookingDate] [datetime] NULL,
+	[status] [bit] NULL,
+	[verified] [bit] NULL,
+ CONSTRAINT [PK_tblBooking] PRIMARY KEY CLUSTERED 
+(
+	[bookingID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tblBookingDetail]    Script Date: 4/19/2022 2:36:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblBookingDetail](
+	[bookingDetailID] [int] IDENTITY(1,1) NOT NULL,
+	[bookingID] [int] NULL,
+	[roomID] [int] NULL,
+	[price] [float] NULL,
+	[checkInDate] [datetime] NULL,
+	[checkOutDate] [datetime] NULL,
+	[feedback] [int] NULL,
+ CONSTRAINT [PK_Table_1] PRIMARY KEY CLUSTERED 
+(
+	[bookingDetailID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tblDiscountCode]    Script Date: 4/19/2022 2:36:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblDiscountCode](
+	[discountID] [nvarchar](50) NOT NULL,
+	[expiredDate] [datetime] NULL,
+	[percent] [int] NULL,
+ CONSTRAINT [PK_tblDiscountCode] PRIMARY KEY CLUSTERED 
+(
+	[discountID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tblHotel]    Script Date: 4/19/2022 2:36:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblHotel](
+	[hotelID] [int] IDENTITY(1,1) NOT NULL,
+	[hotelName] [nvarchar](100) NULL,
+	[areaID] [int] NULL,
+ CONSTRAINT [PK_tblHotel] PRIMARY KEY CLUSTERED 
+(
+	[hotelID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tblRole]    Script Date: 4/19/2022 2:36:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblRole](
+	[roleID] [int] NOT NULL,
+	[roleName] [nvarchar](20) NULL,
+ CONSTRAINT [PK_tblRole] PRIMARY KEY CLUSTERED 
+(
+	[roleID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tblRoom]    Script Date: 4/19/2022 2:36:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblRoom](
+	[roomID] [int] NOT NULL,
+	[roomTypeID] [int] NULL,
+	[status] [bit] NULL,
+	[hotelID] [int] NULL,
+ CONSTRAINT [PK_tblRooms] PRIMARY KEY CLUSTERED 
+(
+	[roomID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tblRoomType]    Script Date: 4/19/2022 2:36:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblRoomType](
+	[roomTypeID] [int] IDENTITY(1,1) NOT NULL,
+	[roomType] [nvarchar](20) NOT NULL,
+	[price] [float] NULL,
+	[description] [nvarchar](100) NULL,
+ CONSTRAINT [PK_tblRoomTypes] PRIMARY KEY CLUSTERED 
+(
+	[roomTypeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tblUser]    Script Date: 4/19/2022 2:36:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblUser](
+	[email] [nvarchar](50) NOT NULL,
+	[password] [nvarchar](200) NULL,
+	[roleID] [int] NULL,
+	[phone] [nvarchar](10) NULL,
+	[name] [nvarchar](100) NULL,
+	[address] [nvarchar](150) NULL,
+	[createDate] [datetime] NULL,
+	[status] [bit] NULL,
+ CONSTRAINT [PK_tblUsers] PRIMARY KEY CLUSTERED 
+(
+	[email] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tblUserDiscount]    Script Date: 4/19/2022 2:36:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblUserDiscount](
+	[userDiscountID] [int] IDENTITY(1,1) NOT NULL,
+	[email] [nvarchar](50) NULL,
+	[discountID] [nvarchar](50) NULL,
+	[isUsed] [bit] NULL,
+ CONSTRAINT [PK_tblUserDiscount] PRIMARY KEY CLUSTERED 
+(
+	[userDiscountID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[tblBooking]  WITH CHECK ADD  CONSTRAINT [FK_tblBooking_tblUser] FOREIGN KEY([email])
+REFERENCES [dbo].[tblUser] ([email])
+GO
+ALTER TABLE [dbo].[tblBooking] CHECK CONSTRAINT [FK_tblBooking_tblUser]
+GO
+ALTER TABLE [dbo].[tblBookingDetail]  WITH CHECK ADD  CONSTRAINT [FK_tblBookingDetail_tblBooking] FOREIGN KEY([bookingID])
+REFERENCES [dbo].[tblBooking] ([bookingID])
+GO
+ALTER TABLE [dbo].[tblBookingDetail] CHECK CONSTRAINT [FK_tblBookingDetail_tblBooking]
+GO
+ALTER TABLE [dbo].[tblBookingDetail]  WITH CHECK ADD  CONSTRAINT [FK_tblBookingDetail_tblRoom] FOREIGN KEY([roomID])
+REFERENCES [dbo].[tblRoom] ([roomID])
+GO
+ALTER TABLE [dbo].[tblBookingDetail] CHECK CONSTRAINT [FK_tblBookingDetail_tblRoom]
+GO
+ALTER TABLE [dbo].[tblRoom]  WITH CHECK ADD  CONSTRAINT [FK_tblRoom_tblHotel] FOREIGN KEY([hotelID])
+REFERENCES [dbo].[tblHotel] ([hotelID])
+GO
+ALTER TABLE [dbo].[tblRoom] CHECK CONSTRAINT [FK_tblRoom_tblHotel]
+GO
+ALTER TABLE [dbo].[tblRoom]  WITH CHECK ADD  CONSTRAINT [FK_tblRoom_tblRoomType] FOREIGN KEY([roomTypeID])
+REFERENCES [dbo].[tblRoomType] ([roomTypeID])
+GO
+ALTER TABLE [dbo].[tblRoom] CHECK CONSTRAINT [FK_tblRoom_tblRoomType]
+GO
+ALTER TABLE [dbo].[tblUser]  WITH CHECK ADD  CONSTRAINT [FK_tblUser_tblRole] FOREIGN KEY([roleID])
+REFERENCES [dbo].[tblRole] ([roleID])
+GO
+ALTER TABLE [dbo].[tblUser] CHECK CONSTRAINT [FK_tblUser_tblRole]
+GO
+ALTER TABLE [dbo].[tblUserDiscount]  WITH CHECK ADD  CONSTRAINT [FK_tblUserDiscount_tblDiscountCode] FOREIGN KEY([discountID])
+REFERENCES [dbo].[tblDiscountCode] ([discountID])
+GO
+ALTER TABLE [dbo].[tblUserDiscount] CHECK CONSTRAINT [FK_tblUserDiscount_tblDiscountCode]
+GO
+ALTER TABLE [dbo].[tblUserDiscount]  WITH CHECK ADD  CONSTRAINT [FK_tblUserDiscount_tblUser] FOREIGN KEY([email])
+REFERENCES [dbo].[tblUser] ([email])
+GO
+ALTER TABLE [dbo].[tblUserDiscount] CHECK CONSTRAINT [FK_tblUserDiscount_tblUser]
+GO
+USE [master]
+GO
+ALTER DATABASE [HotelBooking] SET  READ_WRITE 
+GO
